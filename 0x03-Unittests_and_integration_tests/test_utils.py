@@ -65,7 +65,9 @@ class TestMemoize(TestCase):
                 """ A property """
                 return self.a_method()
 
-        with patch.object(target=TestClass, attribute='a_method', return_value=42) as mock_method:
+        with patch.object(target=TestClass,
+                          attribute='a_method',
+                          return_value=42) as mock_method:
             test = TestClass()
             self.assertEqual(test.a_property, 42)
             self.assertEqual(test.a_property, 42)
