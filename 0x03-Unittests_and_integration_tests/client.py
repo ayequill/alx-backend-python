@@ -30,7 +30,7 @@ class GithubOrgClient:
     @property
     def _public_repos_url(self) -> str:
         """Public repos URL"""
-        return self.org["repos_url"]
+        return self.org()["repos_url"]
 
     @memoize
     def repos_payload(self) -> Dict:
