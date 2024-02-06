@@ -72,30 +72,16 @@ class TestIntegrationGithubOrgClient(TestCase):
     get_patcher = None
 
     @classmethod
-    @patch('client.get_json', )
-    def setUpClass(cls, mock):
+    def setUpClass(cls,):
         """ Set up class """
+        mock = Mock()
         repos = TEST_PAYLOAD[0][1]
         mock.json.return_value = repos
-        mock.side_effect = [repos]
-        # print(TEST_PAYLOAD[0][0])
-        # cls.org_payload = TEST_PAYLOAD[0][0]
-        # cls.expected_repos = repos
-        cls.get_patcher = mock
+        mock.side_effect = repos
+        cls.get_patcher = patch('requests.get', side_effect=mock)
         cls.get_patcher.start()
-        # with patch('client.GithubOrgClient.org', new_callable=PropertyMock) as mock_org:
-        #     mock_org.return_value = cls.org_payload
-        #     instance = GithubOrgClient("google")
-        #     cls.expected_repos = instance.public_repos()
 
     @classmethod
     def tearDownClass(cls):
         """ Tear down class """
         cls.get_patcher.stop()
-
-    # def test_public_repos(self):
-    #     """ Test public repos """
-    #     instance = GithubOrgClient("google")
-    #     res = instance.public_repos()
-    #     print(self.org_payload)
-    #     self.assertEqual(res, self.expected_repos)
