@@ -28,7 +28,9 @@ class TestGithubOrgClient(TestCase):
                 GithubOrgClient,
                 attribute='org',
                 new_callable=Mock,
-                return_value={"repos_url": "https://api.github.com/orgs/google"}
+                return_value={
+                    "repos_url": "https://api.github.com/orgs/google"
+                }
         ) as mock_org:
             instance = GithubOrgClient("google")
             res = instance._public_repos_url
