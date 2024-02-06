@@ -77,7 +77,6 @@ class TestIntegrationGithubOrgClient(TestCase):
         mock = Mock()
         repos = TEST_PAYLOAD[0][1]
         mock.json.return_value = repos
-        mock.side_effect = repos
         cls.get_patcher = patch('requests.get', side_effect=mock)
         cls.get_patcher.start()
 
@@ -85,3 +84,9 @@ class TestIntegrationGithubOrgClient(TestCase):
     def tearDownClass(cls):
         """ Tear down class """
         cls.get_patcher.stop()
+
+    def test_public_repos(self):
+        """ Test public repos """
+        instance = GithubOrgClient("google")
+        res = instance.public_repos()
+        self.assertEqual(res, self.expected_repos)
