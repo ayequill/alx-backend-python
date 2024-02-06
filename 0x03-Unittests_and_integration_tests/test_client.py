@@ -2,7 +2,7 @@
 """ Test client module """
 
 from unittest import TestCase
-from unittest.mock import patch, Mock
+from unittest.mock import patch, PropertyMock, Mock
 from parameterized import parameterized
 from client import GithubOrgClient
 
@@ -34,3 +34,19 @@ class TestGithubOrgClient(TestCase):
             res = instance._public_repos_url
         self.assertEqual(res, "https://api.github.com/orgs/google")
         mock_org.assert_called_once()
+
+    @patch('client.get_json')
+    def test_public_repos(self, mock):
+        """ Test public repos """
+        with patch.object(
+                GithubOrgClient,
+                attribute='_public_repos_url',
+                new_callable=PropertyMock,
+                return_value="https://api.github.com/orgs/google"
+        ) as mock_org:
+            mock.return_value = [{"name": "google"}]
+            instance = GithubOrgClient("google")
+            res = instance.public_repos()
+            mock.assert_called_once_with("https://api.github.com/orgs/google")
+            mock_org.assert_called_once()
+            self.assertEqual(res, [mock.return_value[0]["name"]])
