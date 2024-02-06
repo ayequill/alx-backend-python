@@ -72,7 +72,7 @@ class TestIntegrationGithubOrgClient(TestCase):
     get_patcher = None
 
     @classmethod
-    def setUpClass(cls,):
+    def setUpClass(cls, ):
         """ Set up class """
         mock = Mock()
         repos = TEST_PAYLOAD[0][1]
@@ -90,3 +90,9 @@ class TestIntegrationGithubOrgClient(TestCase):
         instance = GithubOrgClient("google")
         res = instance.public_repos()
         self.assertEqual(res, self.expected_repos)
+
+    def test_public_repos_with_license(self):
+        """ Test public repos with license """
+        instance = GithubOrgClient("google")
+        res = instance.public_repos("apache-2.0")
+        self.assertEqual(res, self.apache2_repos)
